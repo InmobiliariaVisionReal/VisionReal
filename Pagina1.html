@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Inmobiliaria Visión Real</title>
+    <link rel="stylesheet" href="styles.css"> <!-- tu CSS principal -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="Logos/LogoVision.jpg" type="image/x-icon">
+
+    <style>
+        /* Estilos para el toast sobre el slider */
+        .hero-slider {
+            position: relative; /* Necesario para posicionar el toast dentro */
+        }
+
+        #no-results-toast {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-weight: bold;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        #no-results-toast button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -10px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+
+        /* Mejora del diseño de la sección del dueño */
+        #owner-section {
+            background: #f7f7f7; 
+            padding: 60px 20px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
+        .owner-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap; 
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .owner-image-container {
+            flex: 1 1 300px;
+            min-width: 300px;
+            background: #ECECEC;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            padding: 40px;
+        }
+        .owner-image-container img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .owner-text-container {
+            flex: 2 1 400px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .owner-text-container h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #333;
+        }
+        .owner-text-container p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo-container">
+            <img src="Logos/Inmo3.png" alt="Logotipo Inmobiliaria Visión Real" class="logo">
+        </div>
+        <nav class="nav-bar">
+            <ul class="nav-menu">
+                <li><a href="Pagina1.html">Inicio</a></li>
+                <li><a href="Propiedad.html" class="active">Propiedades</a></li>
+                <li><a href="contactamos.html">Contactanos</a></li>
+                <li><a href="acercadenosotros.html">Acerca de Nosotros</a></li>
+                <li><a href="index.html">Redes Sociales</a></li>
+                <link rel="icon" href="Logos/LogoVision.jpg" type="image/x-icon">
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section id="video-section">
+    <video class="video-background" autoplay muted loop>
+        <source src="videos/Pagina1.mp4" type="video/mp4">
+        Tu navegador no soporta video HTML5.
+    </video>
+
+    <section id="minimal-search">
+        <div class="minimal-container">
+            <h2 class="search-title">Encuentra tu propiedad ideal</h2>
+            <form class="minimal-form">
+                <div class="minimal-group">
+                    <label for="operation"><i class="fas fa-handshake"></i> Compra o Alquiler</label>
+                    <select id="operation" name="operation">
+                        <option value="venta">Compra</option>
+                        <option value="alquiler">Alquiler</option>
+                    </select>
+                </div>
+
+                <div class="minimal-group">
+                    <label for="type"><i class="fas fa-home"></i> Tipo de propiedad</label>
+                    <select id="type" name="type">
+                        <option value="departamento">Departamento</option>
+                        <option value="casa">Casa</option>
+                    </select>
+                </div>
+
+                <div class="minimal-group">
+                    <label for="currency"><i class="fas fa-exchange-alt"></i> Moneda</label>
+                    <select id="currency" name="currency">
+                        <option value="soles">Soles (S/.)</option>
+                        <option value="dolares">Dólares ($)</option>
+                    </select>
+                </div>
+
+                <div class="minimal-group">
+                    <label for="price-range"><i class="fas fa-dollar-sign"></i> Rango de precios</label>
+                    <select id="price-range" name="price-range">
+                        <option value="0-50000">0 - 50,000</option>
+                        <option value="50000-100000">50,000 - 100,000</option>
+                        <option value="100000-200000">100,000 - 200,000</option>
+                        <option value="200000-300000">200,000 - 300,000</option>
+                        <option value="300000-400000">300,000 - 400,000</option>
+                        <option value="400000-500000">400,000 - 500,000</option>
+                        <option value="500000-600000">500,000 - 600,000</option>
+                    </select>
+                </div>
+
+                <div class="minimal-group">
+                    <label for="location"><i class="fas fa-map-marker-alt"></i> Ubicación</label>
+                    <input type="text" id="location" name="location" placeholder="Ciudad o dirección">
+                </div>
+
+                <div class="minimal-btn-container">
+                    <button type="button" class="minimal-search-btn">Buscar propiedades</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>  
+
+<section class="hero-slider">
+    <!-- Toast de no resultados dentro del slider -->
+    <div id="no-results-toast" style="display:none;">
+        <span>No se encontraron propiedades con el filtro seleccionado. Mostrando propiedades disponibles.</span>
+        <button id="close-toast-btn">X</button>
+    </div>
+
+    <div class="floating-search-bar">
+        <form class="floating-search-form">
+            <div class="search-group">
+                <label for="slider-operation">¿Qué deseas hacer?</label>
+                <select id="slider-operation" name="slider-operation">
+                    <option value="venta">Comprar</option>
+                    <option value="alquiler">Alquilar</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <label for="slider-type">Tipo de Propiedad</label>
+                <select id="slider-type" name="slider-type">
+                    <option value="departamento">Departamento</option>
+                    <option value="casa">Casa</option>
+                </select>
+            </div>
+            <button type="button" class="floating-search-btn">Buscar Ahora</button>
+        </form>
+    </div>
+
+    <div class="slider-container">
+        <div class="slide"></div>
+        <div class="slide"></div>
+    </div>
+
+    <button class="prev-btn">&lt;</button>
+    <button class="next-btn">&gt;</button>
+
+    <div class="slider-btn-container-improved">
+        <a href="Propiedad.html">
+            <button class="slider-all-products-btn-improved">Ver Todas las Propiedades</button>
+        </a>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sliderContainer = document.querySelector('.slider-container');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const searchBtnMinimal = document.querySelector('.minimal-search-btn');
+    const searchBtnFloating = document.querySelector('.floating-search-btn');
+    const operationSelectMinimal = document.getElementById('operation');
+    const typeSelectMinimal = document.getElementById('type');
+    const operationSelectFloating = document.getElementById('slider-operation');
+    const typeSelectFloating = document.getElementById('slider-type');
+    const priceRangeSelect = document.getElementById('price-range');
+    const currencySelect = document.getElementById('currency');
+    const closeToastBtn = document.getElementById('close-toast-btn');
+    const noResultsToast = document.getElementById('no-results-toast');
+
+    const tipoCambio = 3.85;
+    let slides = [];
+    let currentIndex = 0;
+    let autoSlideInterval;
+    const autoSlideTime = 5000;
+
+    const noResultsModal = document.createElement('div');
+    noResultsModal.classList.add('no-results-modal');
+    noResultsModal.style.display = 'none';
+    noResultsModal.style.position = 'fixed';
+    noResultsModal.style.top = '50%';
+    noResultsModal.style.left = '50%';
+    noResultsModal.style.transform = 'translate(-50%, -50%)';
+    noResultsModal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    noResultsModal.style.color = 'white';
+    noResultsModal.style.padding = '20px';
+    noResultsModal.style.borderRadius = '8px';
+    noResultsModal.style.zIndex = '1000';
+    noResultsModal.innerHTML = `
+    <p id="no-results-message">Por el momento estamos implementando más propiedades.</p>
+    <button id="close-modal-btn">Cerrar</button>
+    `;
+    document.body.appendChild(noResultsModal);
+
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    function closeModal() {
+        noResultsModal.style.display = 'none';
+        closeModalBtn.blur();
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(event) {
+        if (event.key === ' ' || event.key === 'Enter' || event.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    let propiedadesData = [];
+
+    function loadProperties() {
+        fetch('propiedades.json')
+            .then(response => response.json())
+            .then(data => {
+                propiedadesData = Object.values(data).sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10));
+
+                if (propiedadesData.length === 0) {
+                    document.getElementById('no-results-message').textContent = 'Por el momento no contamos con propiedades.';
+                    noResultsModal.style.display = 'block';
+                } else {
+                    mostrarPropiedades(propiedadesData, 'soles');
+                }
+            })
+            .catch(error => console.error("Error al cargar las propiedades:", error));
+    }
+
+    loadProperties();
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            if (i === index) {
+                slide.classList.add('active-slide');
+            } else {
+                slide.classList.remove('active-slide');
+            }
+        });
+    }
+
+    function startAutoSlide() {
+        stopAutoSlide();
+        autoSlideInterval = setInterval(() => {
+            if (slides.length > 0) {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            }
+        }, autoSlideTime);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (slides.length > 0) {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+            startAutoSlide();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (slides.length > 0) {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            showSlide(currentIndex);
+            startAutoSlide();
+        }
+    });
+
+    function filtrarPropiedades(propiedades, operation, type, rango, moneda) {
+        let filtered = propiedades;
+
+        if (operation && operation !== "") {
+            filtered = filtered.filter(prop => prop.tipo === operation);
+        }
+
+        if (type && type !== "") {
+            filtered = filtered.filter(prop => prop.categoria === type);
+        }
+
+        let [minPrice, maxPrice] = rango.split('-').map(Number);
+
+        filtered = filtered.filter(prop => {
+            let numericPrice = parseFloat(prop.precio.replace(/,/g, ''));
+            let priceInSelectedCurrency;
+            if (moneda === 'soles') {
+                priceInSelectedCurrency = (prop.moneda === '$') ? numericPrice * tipoCambio : numericPrice;
+            } else {
+                priceInSelectedCurrency = (prop.moneda === '$') ? numericPrice : (numericPrice / tipoCambio);
+            }
+
+            if (moneda === 'dolares') {
+                minPrice = minPrice / tipoCambio;
+                maxPrice = maxPrice / tipoCambio;
+            }
+
+            return priceInSelectedCurrency >= minPrice && priceInSelectedCurrency <= maxPrice;
+        });
+
+        return filtered;
+    }
+
+    function mostrarPropiedades(propiedades, moneda) {
+        sliderContainer.innerHTML = '';
+        slides = [];
+
+        propiedades.forEach((propiedad, index) => {
+            if (propiedad.imagenes && propiedad.imagenes.length > 0) {
+                const slide = document.createElement('div');
+                slide.classList.add('slide');
+                if (index === 0) slide.classList.add('active-slide');
+
+                let numericPrice = parseFloat(propiedad.precio.replace(/,/g, ''));
+                let displayedPrice;
+
+                if (moneda === 'soles') {
+                    let priceInSoles = (propiedad.moneda === '$') ? numericPrice * tipoCambio : numericPrice;
+                    displayedPrice = `S/.${priceInSoles.toLocaleString()}`;
+                } else {
+                    let priceInDollars = (propiedad.moneda === '$') ? numericPrice : (numericPrice / tipoCambio);
+                    displayedPrice = `$${priceInDollars.toLocaleString()}`;
+                }
+
+                slide.innerHTML = `
+                    <img src="${propiedad.imagenes[0]}" alt="${propiedad.nombre}">
+                    <div class="slide-caption">
+                        <h2>${propiedad.nombre}</h2>
+                        <p class="slide-price">${displayedPrice}</p>
+                        <p class="slide-description">${propiedad.descripcion.substring(0, 100)}...</p>
+                        <button class="view-more-btn" data-id="${propiedad.id}">Ver más</button>
+                    </div>
+                `;
+
+                slide.querySelector('.view-more-btn').addEventListener('click', (e) => {
+                    const propiedadId = e.target.getAttribute('data-id');
+                    window.location.href = `detalledepropiedad.html?propiedad_id=${propiedadId}`;
+                });
+
+                sliderContainer.appendChild(slide);
+                slides.push(slide);
+            }
+        });
+
+        if (slides.length > 0) {
+            currentIndex = 0;
+            showSlide(currentIndex);
+            startAutoSlide();
+        } else {
+            document.getElementById('no-results-message').textContent = 'No hay propiedades disponibles en este momento.';
+            noResultsModal.style.display = 'block';
+        }
+    }
+
+    function scrollToSlider() {
+        const sliderSection = document.querySelector('.hero-slider');
+        if (sliderSection) {
+            sliderSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    function mostrarToast() {
+        noResultsToast.style.display = 'flex';
+        // Desaparecer después de 5 segundos si no se cierra antes
+        setTimeout(() => {
+            if (noResultsToast.style.display === 'flex') {
+                noResultsToast.style.display = 'none';
+            }
+        }, 5000);
+    }
+
+    closeToastBtn.addEventListener('click', () => {
+        noResultsToast.style.display = 'none';
+    });
+
+    searchBtnMinimal.addEventListener('click', () => {
+        const operation = operationSelectMinimal.value;
+        const type = typeSelectMinimal.value;
+        const selectedRange = priceRangeSelect.value;
+        const selectedCurrency = currencySelect.value;
+
+        const filteredProperties = filtrarPropiedades(propiedadesData, operation, type, selectedRange, selectedCurrency);
+
+        if (filteredProperties.length > 0) {
+            mostrarPropiedades(filteredProperties, selectedCurrency);
+        } else {
+            mostrarToast();
+            mostrarPropiedades(propiedadesData, selectedCurrency);
+        }
+        scrollToSlider();
+    });
+
+    searchBtnFloating.addEventListener('click', () => {
+        const operation = operationSelectFloating.value;
+        const type = typeSelectFloating.value;
+        const selectedRange = priceRangeSelect.value;
+        const selectedCurrency = currencySelect.value;
+
+        const filteredProperties = filtrarPropiedades(propiedadesData, operation, type, selectedRange, selectedCurrency);
+
+        if (filteredProperties.length > 0) {
+            mostrarPropiedades(filteredProperties, selectedCurrency);
+        } else {
+            mostrarToast();
+            mostrarPropiedades(propiedadesData, selectedCurrency);
+        }
+        scrollToSlider();
+    });
+
+    sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+    sliderContainer.addEventListener('mouseleave', startAutoSlide);
+});
+</script>
+
+<section id="owner-section" class="show">
+    <div class="owner-card">
+        <div class="owner-image-container">
+            <img src="Logos/maykol2.jpeg" alt="Maykol Herrera">
+        </div>
+        <div class="owner-text-container">
+            <h2>Maykol Herrera</h2>
+            <p>Maykol Herrera, un joven emprendedor de 30 años, ha logrado construir una sólida reputación en el sector inmobiliario gracias a su enfoque innovador y atención al cliente.</p>
+            <p>Su visión y dedicación lo convierten en una figura clave del sector.</p>
+            <a href="contactamos.html" class="owner-contact-button">Contáctame</a>
+            
+            <!-- Redes sociales adicionales -->
+            <div class="owner-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    window.onload = function() {
+        document.getElementById('owner-section').classList.add('show');
+    };
+    </script>
+    
+    
+    
+
+<footer id="footer-section">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>DIRECCIÓN</h3>
+            <p>Av. Rivera Navarrete 395, Piso 24, San Isidro</p>
+            <p>Inversiones Inmobiliarias del Perú S.A.</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>CONTACTO</h3>
+            <p>(01) 920235773 | Ventas</p>
+            <p>(01) 611 3800 | Central Administrativa</p>
+            <p>(01) 611 3855 | Servicio al Cliente</p>
+            <p><a href="mailto:callcenter@imagina.pe">callcenter@imagina.pe</a></p>
+            <p><a href="https://wa.me/51987654321" target="_blank">WhatsApp</a></p>
+        </div>
+
+        <div class="footer-section">
+            <h3>CATEGORÍAS</h3>
+            <ul class="footer-menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="Propiedad.html">Propiedades</a></li>
+                <li><a href="contactamos.html">Contacto</a></li>
+                <li><a href="acercadenosotros.html">Acerca de Nosotros</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>SÍGUENOS EN:</h3>
+            <ul class="footer-social">
+                <li><a href="#"><img src="Logos/facebook.png" alt="Facebook"></a></li>
+                <li><a href="https://www.youtube.com/@InmobiliariaVisionReal"><img src="Logos/social.png" alt="YouTube"></a></li>
+                <li><a href="https://www.instagram.com/inmobiliaria.visionreal/"><img src="Logos/instagram.png" alt="Instagram"></a></li>
+                <li><a href="https://www.tiktok.com/@inmobiliaria.visionreal"><img src="Logos/tik-tok.png" alt="TikTok"></a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const searchBtn = document.querySelector('.minimal-search-btn');
+    const searchResults = document.getElementById('search-results');
+
+    if (searchResults) {
+        searchBtn.addEventListener('click', function() {
+            searchResults.style.display = 'block';
+        });
+    }
+</script>
+
+<div class="footer-bottom">
+    <p>&copy; 2023 Inmobiliaria Visión Real. Todos los derechos reservados.</p>
+</div>
+
+<script>
+    let isScrolling = false;
+
+    document.addEventListener('wheel', function(event) {
+        if (isScrolling) return;
+        isScrolling = true;
+        
+        setTimeout(() => {
+            const windowHeight = window.innerHeight;
+            const currentScroll = window.scrollY;
+        
+            if (event.deltaY > 0) {
+                if (currentScroll < windowHeight) {
+                    document.querySelector('#slider').scrollIntoView({ behavior: 'smooth' });
+                } else if (currentScroll < 2 * windowHeight) {
+                    document.querySelector('#owner-section').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    document.querySelector('#footer-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                if (currentScroll > 2 * windowHeight) {
+                    document.querySelector('#owner-section').scrollIntoView({ behavior: 'smooth' });
+                } else if (currentScroll > windowHeight) {
+                    document.querySelector('#slider').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+            isScrolling = false;
+        }, 300);
+    }, { passive: false });
+</script>
+
+<div id="whatsapp-icon" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <div onclick="toggleQRCode()" style="cursor: pointer; position: relative;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" 
+             style="width: 60px; height: 60px; border-radius: 50%; background-color: #25D366; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+        <div id="qr-container" style="display: none; position: absolute; bottom: 70px; right: 0; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center;">
+            <img src="https://i.ibb.co/BTFk3BT/wa-link-jc441r.png" alt="QR Code" style="width: 150px; height: 150px;">
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #333;">Escanea el QR para contactarnos</p>
+            <a href="https://wa.link/jc441r" target="_blank" style="margin-top: 10px; display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1rem;">Ir al chat</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    #qr-container {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+function toggleQRCode() {
+    const qrContainer = document.getElementById('qr-container');
+    if (qrContainer.style.display === 'none' || qrContainer.style.display === '') {
+        qrContainer.style.display = 'block';
+    } else {
+        qrContainer.style.display = 'none';
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Propiedades en Venta</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Logos/LogoVision.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="container">
+                <div class="logo-container">
+                    <img src="Logos/inmo3.png" alt="Logotipo Inmobiliaria Visión Real" class="logo">
+                </div>
+            <nav class="nav-bar">
+                <ul class="nav-menu">
+                    <li><a href="Pagina1.html">Inicio</a></li>
+                    <li><a href="Propiedad.html" class="active">Propiedades</a></li>
+                    <li><a href="contactamos.html">Contactanos</a></li>
+                    <li><a href="acercadenosotros.html">Acerca de Nosotros</a></li>
+                    <li><a href="index.html">Redes Sociales</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Primera sección con video y título -->
+    <section id="video-section">
+        <video class="video-background" autoplay muted loop>
+            <source src="videos/Propiedades.mp4" type="video/mp4">
+            Tu navegador no soporta video HTML5.
+        </video>
+
+        <div class="content-container2">
+            <h1>Nuestra lista exclusiva de propiedades</h1>
+            <p>Encuentra la casa de tus sueños en las mejores ubicaciones del país</p>
+        </div>
+    </section>
+
+    <div class="scroll-down-button">
+        <i class="fas fa-angle-down"></i>
+    </div>
+
+    <!-- Sección dinámica de categorías -->
+    <section id="properties-dynamic">
+        <h2 class="section-title">Propiedades</h2>
+        
+        <!-- Navegación de categorías -->
+        <div class="category-nav">
+            <button data-category="venta">Propiedades en Venta</button>
+            <button data-category="alquiler_departamento">Departamentos en Alquiler</button>
+            <button data-category="alquiler_casa">Casas en Alquiler</button>
+        </div>
+
+        <!-- Contenedor de propiedades -->
+        <div id="property-container">
+            <div class="property-grid" id="property-grid"></div>
+        </div>
+    </section>
+
+    <!-- Script dinámico para manejar categorías -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const categoryButtons = document.querySelectorAll('.category-nav button');
+            const propertyGrid = document.getElementById('property-grid');
+
+            // Función para cargar propiedades desde el JSON
+            function loadProperties() {
+                fetch('propiedades.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        categoryButtons.forEach(button => {
+                            button.addEventListener('click', () => {
+                                const selectedCategory = button.getAttribute('data-category');
+                                const filteredProperties = filterProperties(data, selectedCategory);
+
+                                if (filteredProperties.length > 0) {
+                                    renderProperties(filteredProperties);
+                                } else {
+                                    showNoDataMessage(selectedCategory, data);
+                                }
+                            });
+                        });
+
+                        // Mostrar la primera categoría al cargar
+                        categoryButtons[0].click();
+                    })
+                    .catch(error => console.error("Error al cargar propiedades:", error));
+            }
+
+            // Filtrar propiedades según categoría
+            function filterProperties(data, category) {
+                if (category === 'venta') {
+                    return Object.values(data).filter(prop => prop.tipo === 'venta');
+                } else if (category === 'alquiler_departamento') {
+                    return Object.values(data).filter(prop => prop.tipo === 'alquiler' && prop.categoria === 'departamento');
+                } else if (category === 'alquiler_casa') {
+                    return Object.values(data).filter(prop => prop.tipo === 'alquiler' && prop.categoria === 'casa');
+                }
+            }
+
+            // Renderizar propiedades
+            function renderProperties(properties) {
+                propertyGrid.innerHTML = '';
+                properties.forEach(property => {
+                    const propertyCard = document.createElement('div');
+                    propertyCard.className = 'property-card';
+                    propertyCard.innerHTML = `
+                        <img src="${property.imagenes[0]}" alt="${property.nombre}">
+                        <div class="info">
+                            <h3>${property.nombre}</h3>
+                            <p class="price">${property.precio}</p>
+                            <p>${property.descripcion.substring(0, 100)}...</p>
+                            <a href="detalledepropiedad.html?propiedad_id=${property.id}" class="view-more">Ver Detalles</a>
+                        </div>
+                    `;
+                    propertyGrid.appendChild(propertyCard);
+                });
+            }
+
+            // Mostrar mensaje de "sin datos"
+            function showNoDataMessage(category, data) {
+                propertyGrid.innerHTML = `
+                    <div class="no-data">
+                        Estamos trabajando para implementar más propiedades en esta categoría. ¡Pronto estarán disponibles!
+                        <button class="redirect-button">Ver Propiedades Disponibles</button>
+                    </div>
+                `;
+                document.querySelector('.redirect-button').addEventListener('click', () => {
+                    const nextCategory = [...categoryButtons].find(button => {
+                        const nextCategory = button.getAttribute('data-category');
+                        return filterProperties(data, nextCategory).length > 0;
+                    });
+
+                    if (nextCategory) nextCategory.click();
+                });
+            }
+
+            loadProperties();
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer id="footer-section">
+        <div class="footer-container">
+            <!-- Sección de Dirección -->
+            <div class="footer-section">
+                <h3>DIRECCIÓN</h3>
+                <p>Av. Rivera Navarrete 395, Piso 24, San Isidro</p>
+                <p>Inversiones Inmobiliarias del Perú S.A.</p>
+            </div>
+
+            <!-- Sección de Contacto -->
+            <div class="footer-section">
+                <h3>CONTACTO</h3>
+                <p>(01) 920235773 | Ventas</p>
+                <p>(01) 611 3800 | Central Administrativa</p>
+                <p>(01) 611 3855 | Servicio al Cliente</p>
+                <p><a href="mailto:callcenter@imagina.pe">callcenter@imagina.pe</a></p>
+                <p><a href="https://wa.me/51987654321" target="_blank">WhatsApp</a></p>
+            </div>
+
+            <!-- Categorías -->
+            <div class="footer-section">
+                <h3>CATEGORÍAS</h3>
+                <ul class="footer-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="Propiedad.html">Propiedades</a></li>
+                    <li><a href="contactamos.html">Contacto</a></li>
+                    <li><a href="acercadenosotros.html">Acerca de Nosotros</a></li>
+                </ul>
+            </div>
+
+            <!-- Redes Sociales -->
+            <div class="footer-section">
+                <h3>SÍGUENOS EN:</h3>
+                <ul class="footer-social">
+                    <li><a href="#"><img src="Logos/facebook.png" alt="Facebook"></a></li>
+                    <li><a href="https://www.youtube.com/@InmobiliariaVisionReal"><img src="Logos/social.png" alt="YouTube"></a></li>
+                    <li><a href="https://www.instagram.com/inmobiliaria.visionreal/"><img src="Logos/instagram.png" alt="Instagram"></a></li>
+                    <li><a href="https://www.tiktok.com/@inmobiliaria.visionreal"><img src="Logos/tik-tok.png" alt="TikTok"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <div id="whatsapp-icon" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <div onclick="toggleQRCode()" style="cursor: pointer; position: relative;">
+            <!-- Icono de WhatsApp -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" 
+                 style="width: 60px; height: 60px; border-radius: 50%; background-color: #25D366; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <!-- QR desplegable -->
+            <div id="qr-container" style="display: none; position: absolute; bottom: 70px; right: 0; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); text-align: center;">
+                <img src="https://i.ibb.co/BTFk3BT/wa-link-jc441r.png" alt="QR Code" style="width: 150px; height: 150px;">
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #333;">Escanea el QR para contactarnos</p>
+                <a href="https://wa.link/jc441r" target="_blank" style="margin-top: 10px; display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1rem;">Ir al chat</a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    /* Opcional: animación para mostrar el QR */
+    #qr-container {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    </style>
+    <script>
+    // Función para mostrar/ocultar el QR
+    function toggleQRCode() {
+        const qrContainer = document.getElementById('qr-container');
+        if (qrContainer.style.display === 'none' || qrContainer.style.display === '') {
+            qrContainer.style.display = 'block';
+        } else {
+            qrContainer.style.display = 'none';
+        }
+    }
+    
+    </script>
+</body>
+</html>

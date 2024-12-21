@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Propiedad</title>
+    <link rel="stylesheet" href="Styles.css">
+    <link rel="icon" href="Logos/LogoVision.jpg" type="image/x-icon">
+     <!-- Importar fuentes e íconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+
+    <!-- Header -->
+   <header>
+    <div class="container">
+        <div class="container">
+            <div class="logo-container">
+                <img src="Logos/inmo2.png" alt="Logotipo Inmobiliaria Visión Real" class="logo">
+            </div>
+        <nav class="nav-bar">
+            <ul class="nav-menu">
+                <li><a href="Pagina1.html">Inicio</a></li>
+                <li><a href="Propiedad.html" class="active">Propiedades</a></li>
+                <li><a href="contactamos.html">Contacto</a></li>
+                <li><a href="acercadenosotros.html">Acerca de Nosotros</a></li>
+                <li><a href="index.html">Redes Sociales</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<!-- Sección principal de detalle de la propiedad -->
+<div id="property-detail" class="content-container">
+<div class="property-detail-container">
+    <!-- Columna izquierda: Título, descripción e imágenes -->
+    <div class="left-column">
+        
+        <div class="property-title"></div>
+        <div class="property-price"></div>
+        <div class="main-image">
+            <img src="" alt="Imagen Principal" id="current-image">
+        </div>
+        <div class="thumbnail-images">
+            <!-- Miniaturas generadas dinámicamente -->
+        </div>
+        <div class="property-description">
+            <h2>Descripción</h2>
+            <p id="property-description-text"></p>
+        </div>
+        <!-- Galería de imágenes dinámica -->
+        
+    </div>
+
+    <!-- Sección derecha: Formulario de contacto con diseño actualizado -->
+    <div class="form-container">
+        <h2>Contáctanos</h2>
+        <form id="contact-form" class="contact-form">
+            <input type="text" name="nombre" placeholder="Tu Nombre" required pattern="[A-Za-zÀ-ÿ\s]+" title="El nombre solo debe contener letras.">
+            <div class="field-container">
+                <input type="text" name="dni" placeholder="Tu DNI" required pattern="\d{8,10}" title="El DNI debe tener entre 8 y 10 dígitos.">
+                <small class="error-message" id="dni-error" style="color: red; display: none;">Solo se permiten números.</small>
+            </div>
+            <input type="email" name="email" placeholder="Tu Email" required>
+            <div class="field-container">
+                <input type="tel" name="telefono" placeholder="Tu Teléfono" required pattern="[\d+]{8,15}" title="El teléfono debe contener solo números y puede incluir el símbolo '+'.">
+                <small class="error-message" id="telefono-error" style="color: red; display: none;">Solo se permiten números y el símbolo '+'.</small>
+            </div>
+            <textarea name="mensaje" required style="min-height: 120px; resize: none;">Estoy interesado en esta propiedad, por favor contáctame. ¿Podríamos hablar para más detalles?</textarea>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="terminos" required> Acepto los términos y condiciones</label>
+                <label><input type="checkbox" name="datos" required> Acepto el uso de mis datos personales</label>
+            </div>
+            <button type="submit" class="submit-btn">Contactar</button>
+        </form>
+        
+        <!-- Modal de carga -->
+        <div id="loading-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); text-align: center; z-index: 1000;">
+            <p style="font-size: 1.2rem; color: blue;">Enviando formulario, por favor espera...</p>
+        </div>
+        
+        <!-- Modal para confirmar el envío -->
+        <div id="success-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); text-align: center; z-index: 1000;">
+            <p style="font-size: 1.2rem; color: green;">¡Formulario enviado con éxito! Nos pondremos en contacto pronto.</p>
+            <button onclick="closeModal()" style="margin-top: 10px; padding: 10px 20px; background-color: green; color: white; border: none; border-radius: 5px; cursor: pointer;">Cerrar</button>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Modal para la galería de imágenes y el mapa -->
+<div class="modal" id="image-modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content">
+        <span class="prev-modal">&#10094;</span>
+        <div id="modal-display-area"></div>
+        <span class="next-modal">&#10095;</span>
+        <div class="modal-buttons">
+            <button id="image-btn">Ver Imagen</button>
+            <button id="map-btn">Ver Mapa</button>
+            <button id="streetview-btn">Ver Street View</button>
+        </div>
+    </div>
+</div>
+</div>
+
+  
+    <!-- Enlaza tu archivo JavaScript -->
+    <script>
+        // Obtener el `id` de la propiedad desde la URL
+        function mostrarDetallePropiedad() {
+    const propiedadId = getPropertyIdFromUrl();
+    const propiedadIdNum = parseInt(propiedadId, 10);
+
+    const propiedad = propiedadesData.find(p => p.id === propiedadIdNum);
+
+    if (propiedad) {
+        // Actualizar el título
+        document.getElementById('property-name').textContent = propiedad.nombre;
+
+        // Crear el slider de fotos
+        const sliderContainer = document.querySelector('.property-slider');
+        sliderContainer.innerHTML = ''; // Limpiar el contenido previo
+
+        propiedad.imagenes.forEach((imagen, index) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.classList.add('slide');
+            if (index === 0) {
+                slideDiv.classList.add('active-slide');
+            }
+            const imgElement = document.createElement('img');
+            imgElement.src = imagen;
+            imgElement.alt = propiedad.nombre;
+            slideDiv.appendChild(imgElement);
+            sliderContainer.appendChild(slideDiv);
+        });
+
+        // Actualizar la descripción
+        document.getElementById('property-description-text').textContent = propiedad.descripcion;
+
+        // Inicializar el slider si es necesario
+        inicializarSlider();
+    } else {
+        console.error("Propiedad no encontrada");
+    }
+}
+
+function inicializarSlider() {
+    // Aquí puedes agregar el código para inicializar el slider,
+    // por ejemplo, configurar eventos para los botones de navegación.
+}
+
+
+    // Función para cargar las propiedades
+    function loadProperties() {
+        fetch('propiedades.json')
+            .then(response => response.json())
+            .then(data => {
+                propiedadesData = Object.values(data);
+                mostrarDetallePropiedad(); // Llama a mostrarDetallePropiedad después de cargar
+            })
+            .catch(error => console.error("Error al cargar las propiedades:", error));
+    }
+
+    // Llama a la función loadProperties para cargar los datos al inicio
+    loadProperties();
+
+    //function initMap() {
+    // Código para inicializar el mapa
+    //var map = new google.maps.Map(document.getElementById('map'), {
+     // center: {lat: -12.0464, lng: -77.0428},
+     // zoom: 8
+   // });
+ // }
+
+ 
+    // Validar que solo se permitan números y el símbolo '+' en Teléfono
+    const telefonoField = document.querySelector('input[name="telefono"]');
+    const telefonoError = document.getElementById('telefono-error');
+    const dniField = document.querySelector('input[name="dni"]');
+    const dniError = document.getElementById('dni-error');
+
+    dniField.addEventListener('input', function () {
+        const invalidCharacters = /[^0-9]/g;
+        if (this.value.match(invalidCharacters)) {
+            dniError.style.display = 'block';
+        } else {
+            dniError.style.display = 'none';
+        }
+        this.value = this.value.replace(invalidCharacters, '').slice(0, 10);
+    });
+
+    telefonoField.addEventListener('input', function () {
+        const invalidCharacters = /[^0-9+]/g;
+        if (this.value.match(invalidCharacters)) {
+            telefonoError.style.display = 'block';
+        } else {
+            telefonoError.style.display = 'none';
+        }
+        this.value = this.value.replace(invalidCharacters, '').slice(0, 15);
+    });
+
+    // Enviar el formulario usando AJAX
+    const form = document.getElementById('contact-form');
+    const loadingModal = document.getElementById('loading-modal');
+    const successModal = document.getElementById('success-modal');
+
+    function closeModal() {
+        successModal.style.display = 'none';
+    }
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Mostrar el modal de carga
+        loadingModal.style.display = 'block';
+
+        const formData = new FormData(form);
+        const url = "https://formspree.io/f/xyzydwwn";
+
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            loadingModal.style.display = 'none'; // Ocultar modal de carga
+            if (response.ok) {
+                successModal.style.display = 'block'; // Mostrar modal de éxito
+                form.reset(); // Limpiar el formulario
+            } else {
+                return response.json().then(errorData => {
+                    alert('Error al enviar el formulario: ' + JSON.stringify(errorData)); // Mostrar error detallado
+                });
+            }
+        })
+        .catch(error => {
+            loadingModal.style.display = 'none'; // Ocultar modal de carga
+            alert('No se pudo enviar el formulario. Error técnico: ' + error.message);
+        });
+    });
+        </script>
+
+    <script src="detalledepropiedad.js"></script>
+    <!-- Incluir Google Maps API (reemplaza TU_API_KEY con tu clave real) -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap" async></script> -->
+
+
+
+        <!-- Footer premium con varias secciones -->
+        <footer id="footer-section">
+            <div class="footer-container">
+                <!-- Sección de Dirección -->
+                <div class="footer-section">
+                    <h3>DIRECCIÓN</h3>
+                    <p>Av. Rivera Navarrete 395, Piso 24, San Isidro</p>
+                    <p>Inversiones Inmobiliarias del Perú S.A.</p>
+                </div>
+    
+                <!-- Sección de Contacto -->
+                <div class="footer-section">
+                    <h3>CONTACTO</h3>
+                    <p>(01) 920235773 | Ventas</p>
+                    <p>(01) 611 3800 | Central Administrativa</p>
+                    <p>(01) 611 3855 | Servicio al Cliente</p>
+                    <p><a href="mailto:callcenter@imagina.pe">callcenter@imagina.pe</a></p>
+                    <p><a href="https://wa.me/51987654321" target="_blank">WhatsApp</a></p>
+                </div>
+    
+                <!-- Categorías (equivalente a enlaces del header) -->
+                <div class="footer-section">
+                    <h3>CATEGORÍAS</h3>
+                    <ul class="footer-menu">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="Propiedad.html">Propiedades</a></li>
+                        <li><a href="contactamos.html">Contacto</a></li>
+                        <li><a href="acercadenosotros.html">Acerca de Nosotros</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Redes Sociales con iconos -->
+                <div class="footer-section">
+                    <h3>SÍGUENOS EN:</h3>
+                    <ul class="footer-social">
+                        <li><a href="#"><img src="Logos/facebook.png" alt="Facebook"></a></li>
+                        <li><a href="https://www.youtube.com/@InmobiliariaVisionReal"><img src="Logos/social.png" alt="YouTube"></a></li>
+                        <li><a href="https://www.instagram.com/inmobiliaria.visionreal/"><img src="Logos/instagram.png" alt="Instagram"></a></li>
+                        <li><a href="https://www.tiktok.com/@inmobiliaria.visionreal"><img src="Logos/tik-tok.png" alt="TikTok"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+        
+     <!-- Parte inferior del footer -->
+     <div class="footer-bottom">
+        <p>&copy; 2023 Inmobiliaria Visión Real. Todos los derechos reservados.</p>
+    </div>
+    <div id="whatsapp-icon" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <div onclick="toggleQRCode()" style="cursor: pointer; position: relative;">
+            <!-- Icono de WhatsApp -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" 
+                 style="width: 60px; height: 60px; border-radius: 50%; background-color: #25D366; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <!-- QR desplegable -->
+            <div id="qr-container" style="display: none; position: absolute; bottom: 70px; right: 0; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); text-align: center;">
+                <img src="https://i.ibb.co/BTFk3BT/wa-link-jc441r.png" alt="QR Code" style="width: 150px; height: 150px;">
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #333;">Escanea el QR para contactarnos</p>
+                <a href="https://wa.link/jc441r" target="_blank" style="margin-top: 10px; display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1rem;">Ir al chat</a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    /* Opcional: animación para mostrar el QR */
+    #qr-container {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    </style>
+    <script>
+    // Función para mostrar/ocultar el QR
+    function toggleQRCode() {
+        const qrContainer = document.getElementById('qr-container');
+        if (qrContainer.style.display === 'none' || qrContainer.style.display === '') {
+            qrContainer.style.display = 'block';
+        } else {
+            qrContainer.style.display = 'none';
+        }
+    }
+    
+    </script>
+</body>
+</html>

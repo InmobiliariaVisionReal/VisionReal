@@ -1,0 +1,60 @@
+{
+    "1": {
+        "id": 1,
+        "nombre": "Casa 1",
+        "tipo": "venta",
+        "categoria": "casa",
+        "precio": "250,000",
+        "moneda": "S/",
+        "ubicacion":"san isidro, la molina",
+        "descripcion": "Hermosa casa de 3 pisos con amplios espacios y acabados de lujo. Sala y comedor: Espacios abiertos, iluminados y modernos con muebles contemporáneos, pisos de mármol y lámparas colgantes. Cocina: Totalmente equipada con encimeras de mármol negro, gabinetes blancos y barra de desayuno. Patio: Hermoso jardín con piscina decorativa en mosaico y área de parrilla con horno, ideal para reuniones al aire libre. Habitaciones: Espaciosas, con buena iluminación natural y diseño moderno. Ubicada en una zona tranquila y cercana a servicios. ¡Ideal para familias!",
+        "latitud": -12.092,
+        "longitud": -77.028,
+        "imagenes": [
+            "fotosdeterrenos/Ventas/Casa1/1.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/2.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/3.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/4.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/5.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/6.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/7.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/8.jpeg",
+            "fotosdeterrenos/Ventas/Casa1/9.jpeg"
+        ]
+    },
+    "2": {
+        "id": 2,
+        "nombre": "Casa 2",
+        "tipo": "venta",
+        "categoria": "casa",
+        "precio": "80,000",
+        "moneda": "S/",
+        "ubicacion":"san isidro, la molina",
+        "descripcion": "Acogedora casa de dos pisos en una zona tranquila.",   
+        "latitud": -12.092,
+        "longitud": -77.028,    
+        "imagenes": [
+            "fotosdeterrenos/Ventas/Casa2/1.jpeg",
+            "fotosdeterrenos/Ventas/Casa2/2.jpeg"
+        ]
+    },
+    "3": {
+        "id": 3,
+        "nombre": "Puente Piedra Casa",
+        "tipo": "venta",
+        "categoria": "casa",
+        "precio": "55,000",
+        "moneda": "S/",
+        "ubicacion":"Señor de Huanca, Carabayllo",
+        "descripcion": "Vendo casa  tres pisos en la asociación nuestro señor de huanca mz C lote 3   distrito Carabayllo al costado de la urbanización san Pedro quinta etapa  a  10 minutos de la panamericana Norte grifo norteño   se encuentra al  rededor de mercados colegios.",   
+        "latitud": -12.092,
+        "longitud": -77.028,    
+        "imagenes": [
+            "fotosdeterrenos/Ventas/Casa3/Foto1.jpeg",
+            "fotosdeterrenos/Ventas/Casa3/Foto2.jpeg",
+            "fotosdeterrenos/Ventas/Casa3/Foto3.jpeg",
+            "fotosdeterrenos/Ventas/Casa3/Foto4.jpeg"
+        ]
+
+}
+}
