@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
+
             // Evento para abrir el modal al hacer clic en la imagen principal
             mainImage.addEventListener('click', () => {
                 openModal();

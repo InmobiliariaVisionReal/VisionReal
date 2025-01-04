@@ -18,6 +18,7 @@ body, html {
 }
 
 
+
 /* Hero Section que ocupa todo el alto de la pantalla */
 .hero-section {
     position: relative;
@@ -31,19 +32,30 @@ body, html {
 }
 
 
-
 /* Contenedor del logotipo */
+/* Ajustes del contenedor del logo y el ícono del menú */
 .logo-container {
-    position: relative;
-    margin-bottom: 20px;
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    padding: 10px 0;
 }
-
-
-/* Estilo para la imagen del logotipo */
+  
 .logo {
-    width: 250px; /* Ajusta el tamaño según el logotipo real */
+    height: auto;
+    max-height: 60px;
+    width: auto;
+    max-width: 200px;
 }
+  
+
+/* Para pantallas más pequeñas (300px - 600px) */
+@media (max-width: 600px) {
+    .logo {
+        max-width: 150px;  /* Reduce el tamaño del logo */
+    }
+}
+
 
 
 /* Contenido principal */
@@ -104,71 +116,81 @@ body, html {
     padding: 0 20px;
 }
 
-
-/* Contenedor del logo */
-.logo-container {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 20px;
-}
-
-
-.logo {
+.menu-icon {
+    display: none; /* Oculto en desktop de verdad */
+    cursor: pointer;
+    z-index: 1001;
+    width: 50px;
     height: 50px;
 }
 
 
-/* Barra de navegación */
+/* ==================================
+   MEDIA QUERY PARA PANTALLAS PEQUEÑAS
+   ================================== */
+   @media (max-width: 768px) {
 
-.nav-bar {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-
-.nav-menu {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-
-.nav-menu li {
-    margin: 0 20px;
-}
-
-
-.nav-menu a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s;
-}
-
-
-.nav-menu a:hover {
-    color: #FFD700;
-}
-
-
-.nav-menu li a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    padding-bottom: 5px;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-}
-
-
-.nav-menu li a:hover {
-    color: rgba(228, 8, 19, 0.712);
-    border-bottom: 2px solid white;
-}
-
+    /* Menú oculto por defecto en móvil */
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 50%;
+        transform: translateX(-50%); /* Centra el menú */
+        width: 90%; /* Ajusta el ancho del menú */
+        background-color: rgba(0, 0, 0, 0.95);
+        z-index: 999;
+        text-align: center; /* Alinea el texto al centro */
+        border-radius: 10px; /* Bordes redondeados para el menú */
+    }
+  
+    /* Al hacer toggle => se muestra */
+    .nav-menu.show {
+      display: flex;
+    }
+  
+    /* Ícono hamburguesa visible en móvil */
+    .menu-icon {
+        display: none;
+        cursor: pointer;
+        z-index: 1001;
+        width: 50px;
+        height: 50px;
+        border: 2px solid white;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.7);
+        transition: all 0.3s ease;
+    }
+    .menu-icon:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+    }
+    
+    .menu-icon i {
+        font-size: 1.5rem;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+    
+    .menu-icon.open i {
+        transform: rotate(90deg);
+    }
+  
+    .nav-menu li {
+      margin: 15px 0;
+      text-align: center;
+    }
+  
+    .nav-menu li a {
+      display: block;
+      font-size: 1.3rem;
+      padding: 10px;
+    }
+  }
 
 
 .footer-container {
@@ -178,7 +200,7 @@ body, html {
     max-width: 1200px;
     width: 100%;
     gap: 30px;
-}
+    }
 
 
 .footer-section {
@@ -268,6 +290,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 70px
 
 }
 
@@ -747,9 +770,9 @@ body {
 /* Global Styles */
 
 /* Header */
-Header {
+header {
     background-color: black;
-    height: 70px;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -757,60 +780,48 @@ Header {
     top: 0;
     width: 100%;
     z-index: 1000;
-}
-
-
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 20px;
-}
-
-
-
-.logo {
-    height: 50px;
-}
-
-
-.nav-bar {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-.nav-menu {
-    list-style: none;
     margin: 0;
     padding: 0;
+  }
+  
+  .nav-bar {
+    height: auto;
     display: flex;
-}
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
 
+  .nav-menu {
+    list-style: none;
+    display: flex; 
+    margin: 0;
+    padding: 0;
+  }
+  .nav-menu.show {
+    display: flex;
+  }
 
-.nav-menu li {
+  .nav-menu li {
     margin: 0 20px;
-}
+  }
 
 
-.nav-menu li a {
+  .nav-menu li a {
     text-decoration: none;
     color: white;
     font-size: 18px;
     font-weight: 500;
     padding-bottom: 5px;
     transition: color 0.3s ease, border-bottom 0.3s ease;
-}
+  }
 
 
-.nav-menu li a:hover {
-    color: rgba(228, 8, 19, 0.712);
+  .nav-menu li a:hover {
+    color: #E40813;
     border-bottom: 2px solid white;
-}
+  }
+  
 
 
 .footer-section p a,
@@ -1414,9 +1425,12 @@ Header {
 
 header .container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-}
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+  }
 
 .property-description {
     max-width: 100%;
@@ -1428,6 +1442,15 @@ header .container {
     column-gap: 30px; /* Espacio entre columnas */
 }
 
+@media (max-width: 480px) {
+    .logo {
+        max-width: 90%;  /* Hace el logo más grande en pantallas pequeñas */
+    }
+
+    .logo-container {
+        justify-content: center;  /* Centra el logo */
+    }
+}
 
 
 
@@ -2050,14 +2073,6 @@ body, h1, h2, p {
     transform: scale(1.05);
 }
 
-.logo {
-    width: 150%; /* O ajusta a un valor fijo */
-    height: auto; /* Mantén las proporciones */
-    max-width: 150px;
-    object-fit: contain; /* Asegura que no se recorte */
-    margin-left: 80px;
-    margin-top: 5px;
-}
 
 #whatsapp-icon:hover #qr-code {
     display: block; /* Mostrar QR al pasar el mouse */
@@ -2168,3 +2183,140 @@ footer {
 #map-btn, #streetview-btn {
     display: none;
 }
+   /* Estilos para el toast sobre el slider */
+   .hero-slider {
+    position: relative; /* Necesario para posicionar el toast dentro */
+}
+
+#no-results-toast {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff3cd;
+    color: #856404;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    font-weight: bold;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeInDown 0.3s ease;
+}
+
+#no-results-toast button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #856404;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+
+/* Mejora del diseño de la sección del dueño */
+#owner-section {
+    background: #f7f7f7; 
+    padding: 60px 20px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+.owner-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-wrap: wrap; 
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.owner-image-container {
+    flex: 1 1 300px;
+    min-width: 300px;
+    background: #ECECEC;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    padding: 40px;
+}
+.owner-image-container img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.owner-text-container {
+    flex: 2 1 400px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.owner-text-container h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+}
+.owner-text-container p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+}
+@media (max-width: 768px) {
+    .owner-card {
+      flex-direction: column;  /* Encolumna la tarjeta */
+      padding: 20px; /* Disminuye el padding si deseas */
+    }
+  
+    .owner-image-container, 
+    .owner-text-container {
+      width: 100%; 
+      padding: 20px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  
+    .owner-image-container {
+      padding: 20px 0; /* Ajusta espaciado */
+    }
+  
+    .owner-image-container img {
+      width: 180px;
+      height: 180px;
+    }
+  
+    .owner-text-container h2 {
+      font-size: 1.8rem; /* Ajusta para móvil */
+    }
+  
+    .owner-text-container p {
+      font-size: 1rem; 
+    }
+  }
+  @media (max-width: 768px) {
+    .footer-container {
+      flex-direction: column; /* apila en columna */
+      align-items: center;
+    }
+    
+    .footer-section {
+      flex: 0 0 100%; /* ocupa todo el ancho */
+      margin-bottom: 20px;
+    }
+  }
+  
