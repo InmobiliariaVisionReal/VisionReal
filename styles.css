@@ -35,18 +35,38 @@ body, html {
 /* Contenedor del logotipo */
 /* Ajustes del contenedor del logo y el ícono del menú */
 .logo-container {
+    position: relative;
     display: flex;
     align-items: center;
-    max-width: 100%;
-    padding: 10px 0;
-}
+    justify-content: center;
+    padding: 20px;
+  }
   
-.logo {
+  /* Ajusta el tamaño que desees para el logo */
+  .logo {
+    max-width: 250px;
     height: auto;
-    max-height: 60px;
-    width: auto;
-    max-width: 200px;
-}
+    position: relative; /* Para poder usar el pseudo-elemento ::after */
+  }
+  
+  /* Creamos un contorno luminoso con un pseudo-elemento */
+  .logo::after {
+    content: "";
+    position: absolute;
+    top: -8px;     /* Ajusta estos valores para manejar el grosor y el */
+    left: -8px;    /* “espacio” que ocupa el contorno alrededor del logo */
+    right: -8px;
+    bottom: -8px;
+    border: 2px solid #fff; /* Color y grosor del contorno */
+    border-radius: 5px;     /* Ajusta la curvatura de las esquinas */
+    opacity: 0.7;           /* Transparencia para un toque más sutil */
+    pointer-events: none;   /* Para que no interfiera con el mouse */
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff; 
+    /* Ajusta la intensidad y el “desenfoque” con más o menos valores en box-shadow */
+    z-index: -1;            /* Detrás del logo para que no se superponga encima de él */
+  }
+  
+  
   
 
 /* Para pantallas más pequeñas (300px - 600px) */
@@ -762,7 +782,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #b8b7b7;
     color: #333;
 }
 /* Estilo general de la sección de propiedades */
@@ -883,6 +903,11 @@ header {
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
+}
+
+.logo-header img {
+    display: block;
+    border-radius: 150px; /* Ajusta este valor para la curvatura */
 }
 
 
@@ -1010,7 +1035,7 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #f8f9fa;
+    background-color: #f2fcf7;
     position: relative;
     overflow: hidden;
     position: relative;
@@ -2130,7 +2155,7 @@ footer {
     width: 300px; /* Ajustar tamaño */
     margin: 10px;
     padding: 15px;
-    background-color: #f4f4f4;
+    background-color: #faf4ee;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
